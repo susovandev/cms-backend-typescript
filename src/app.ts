@@ -32,14 +32,14 @@ export class App {
     }
     private setupGlobalErrors() {
         this.app.use((req: Request, res: Response) => {
-            res.status(StatusCodes.NOT_FOUND).json({
-                success: false,
-                statusCode: StatusCodes.NOT_FOUND,
-                message:
+            res.status(StatusCodes.NOT_FOUND).json(
+                new ApiResponse(
+                    StatusCodes.NOT_FOUND,
                     config.SERVER.NODE_ENV === 'production'
                         ? 'No route found. Please contact the administrator.'
                         : `Cant find this ${req.originalUrl} route. Please check the route again.`,
-            });
+                ),
+            );
         });
     }
     private serverListen() {

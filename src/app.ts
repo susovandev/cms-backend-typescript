@@ -1,11 +1,7 @@
-import express, {
-    type Application,
-    Request,
-    Response,
-    NextFunction,
-} from 'express';
+import express, { type Application, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { config } from './config/env-config.js';
+import { connectDB } from './db/db.js';
 
 export class App {
     app: Application;
@@ -13,7 +9,8 @@ export class App {
         this.app = express();
     }
 
-    public start() {
+    public async start() {
+        await connectDB();
         this.setupRoutes();
         this.setupGlobalErrors();
         this.serverListen();
@@ -29,7 +26,7 @@ export class App {
         });
     }
     private setupGlobalErrors() {
-        this.app.use((req: Request, res: Response, next: NextFunction) => {
+        this.app.use((req: Request, res: Response) => {
             res.status(StatusCodes.NOT_FOUND).json({
                 success: false,
                 statusCode: StatusCodes.NOT_FOUND,
@@ -38,7 +35,6 @@ export class App {
                         ? 'No route found. Please contact the administrator.'
                         : `Cant find this ${req.originalUrl} route. Please check the route again.`,
             });
-            next();
         });
     }
     private serverListen() {

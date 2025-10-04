@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { config } from './config/env-config.js';
 import { connectDB } from './db/db.js';
 import Logger from './lib/logger.js';
+import morganMiddleware from './middlewares/morgan-middleware.js';
 
 export class App {
     app: Application;
@@ -12,11 +13,15 @@ export class App {
 
     public async start() {
         await connectDB();
+        this.setupMiddlewares();
         this.setupRoutes();
         this.setupGlobalErrors();
         this.serverListen();
     }
 
+    private setupMiddlewares() {
+        this.app.use(morganMiddleware);
+    }
     private setupRoutes() {
         this.app.get('/', (_req: Request, res: Response) => {
             res.status(StatusCodes.OK).json({

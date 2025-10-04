@@ -14,15 +14,24 @@ export class App {
     }
 
     public start() {
-        this.setUpRoutes();
+        this.setupRoutes();
         this.setupGlobalErrors();
         this.serverListen();
     }
 
+    private setupRoutes() {
+        this.app.get('/', (_req: Request, res: Response) => {
+            res.status(StatusCodes.OK).json({
+                success: true,
+                statusCode: StatusCodes.OK,
+                message: 'Server is running',
+            });
+        });
+    }
     private setupGlobalErrors() {
         this.app.use((req: Request, res: Response, next: NextFunction) => {
             res.status(StatusCodes.NOT_FOUND).json({
-                status: false,
+                success: false,
                 statusCode: StatusCodes.NOT_FOUND,
                 message:
                     config.SERVER.NODE_ENV === 'production'

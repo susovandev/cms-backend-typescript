@@ -4,6 +4,7 @@ import { config } from './config/env-config.js';
 import { connectDB } from './db/db.js';
 import Logger from './lib/logger.js';
 import morganMiddleware from './middlewares/morgan-middleware.js';
+import { ApiResponse } from './utils/apiResponse.js';
 
 export class App {
     app: Application;
@@ -24,11 +25,9 @@ export class App {
     }
     private setupRoutes() {
         this.app.get('/', (_req: Request, res: Response) => {
-            res.status(StatusCodes.OK).json({
-                success: true,
-                statusCode: StatusCodes.OK,
-                message: 'Server is running',
-            });
+            res.status(StatusCodes.OK).json(
+                new ApiResponse(StatusCodes.OK, 'Server is running'),
+            );
         });
     }
     private setupGlobalErrors() {

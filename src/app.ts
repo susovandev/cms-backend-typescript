@@ -2,6 +2,7 @@ import express, { type Application, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { config } from './config/env-config.js';
 import { connectDB } from './db/db.js';
+import Logger from './lib/logger.js';
 
 export class App {
     app: Application;
@@ -39,7 +40,7 @@ export class App {
     }
     private serverListen() {
         this.app.listen(config.SERVER.PORT, () => {
-            console.log(
+            Logger.debug(
                 `Server is running on http://localhost:${config.SERVER.PORT}`,
             );
         });

@@ -7,6 +7,7 @@ import morganMiddleware from './middlewares/morgan-middleware.js';
 import { ApiResponse } from './utils/apiResponse.js';
 import { globalErrorHandler } from './middlewares/globalErrorHandler-middleware.js';
 import { notFoundHandler } from './middlewares/notFoundHandler-middleware.js';
+import { appRouter } from './routes/app.routes.js';
 
 export class App {
     app: Application;
@@ -31,6 +32,7 @@ export class App {
                 new ApiResponse(StatusCodes.OK, 'Server is running'),
             );
         });
+        appRouter(this.app);
     }
     private setupGlobalErrors() {
         this.app.use(notFoundHandler);

@@ -5,6 +5,7 @@ import { connectDB } from './db/db.js';
 import Logger from './lib/logger.js';
 import morganMiddleware from './middlewares/morgan-middleware.js';
 import { ApiResponse } from './utils/apiResponse.js';
+import { globalErrorHandler } from './middlewares/globalErrorHandler-middleware.js';
 
 export class App {
     app: Application;
@@ -41,6 +42,7 @@ export class App {
                 ),
             );
         });
+        this.app.use(globalErrorHandler);
     }
     private serverListen() {
         this.app.listen(config.SERVER.PORT, () => {

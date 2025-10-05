@@ -6,6 +6,7 @@ import Logger from './lib/logger.js';
 import morganMiddleware from './middlewares/morgan-middleware.js';
 import { ApiResponse } from './utils/apiResponse.js';
 import { globalErrorHandler } from './middlewares/globalErrorHandler-middleware.js';
+import { notFoundHandler } from './middlewares/notFoundHandler-middleware.js';
 
 export class App {
     app: Application;
@@ -32,16 +33,7 @@ export class App {
         });
     }
     private setupGlobalErrors() {
-        this.app.use((req: Request, res: Response) => {
-            res.status(StatusCodes.NOT_FOUND).json(
-                new ApiResponse(
-                    StatusCodes.NOT_FOUND,
-                    config.SERVER.NODE_ENV === 'production'
-                        ? 'No route found. Please contact the administrator.'
-                        : `Cant find this ${req.originalUrl} route. Please check the route again.`,
-                ),
-            );
-        });
+        this.app.use(notFoundHandler);
         this.app.use(globalErrorHandler);
     }
     private serverListen() {

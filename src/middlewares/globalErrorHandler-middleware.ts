@@ -11,6 +11,7 @@ export const globalErrorHandler = (
     res: Response,
     _next: NextFunction,
 ): void => {
+    Logger.info('Global middleware called');
     let statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
     let message = 'Something went wrong on the server.';
     let isOperational = false;

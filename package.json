@@ -4,10 +4,10 @@
   "description": "",
   "main": "dist/main.js",
   "scripts": {
-    "test": "vitest",
+    "test": "set NODE_ENV=test && vitest",
     "start:dev": "tsx watch src/main.ts",
-    "build": "npm run format && tsc",
-    "start:prod": "node dist/main.js",
+    "build": "npm run format && tsc && tsc-alias",
+    "start:prod": "npm run build && set NODE_ENV=production && node dist/main.js",
     "format": "prettier --write \"src/**/*.ts\" ",
     "format:check": "prettier --check \"src/**/*.ts\" "
   },
@@ -26,9 +26,11 @@
     "prettier": "^3.6.2",
     "supertest": "^7.1.4",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.45.0",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
   },
   "dependencies": {

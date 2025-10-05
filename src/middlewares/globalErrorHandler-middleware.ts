@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response, NextFunction } from 'express';
-import { AppError } from '../errors/index.js';
 import { StatusCodes } from 'http-status-codes';
-import { config } from '../config/env-config.js';
-import Logger from '../lib/logger.js';
+import { AppError } from '@/errors/index.js';
+import { config } from '@/config/env-config.js';
+import Logger from '@/lib/logger.js';
 
 export const globalErrorHandler = (
     err: Error,

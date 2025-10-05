@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { IUserShape, UserRole } from './types/user-types.js';
+import bcrypt from 'bcryptjs';
 export const userSchema: Schema<IUserShape> = new Schema(
     {
         username: {
@@ -12,7 +13,6 @@ export const userSchema: Schema<IUserShape> = new Schema(
         },
         fullname: {
             type: String,
-            required: [true, 'Fullname is required'],
             trim: true,
             minlength: [3, 'Fullname must be at least 3 characters long'],
             maxlength: [50, 'Fullname must be at most 50 characters long'],
@@ -36,7 +36,7 @@ export const userSchema: Schema<IUserShape> = new Schema(
         },
         role: {
             type: String,
-            enum: Object.keys(UserRole),
+            enum: Object.values(UserRole),
             default: UserRole.VIEWER,
         },
         avatar: {
@@ -69,5 +69,12 @@ export const userSchema: Schema<IUserShape> = new Schema(
 );
 
 userSchema.index({ username: 1, email: 1 });
+
+userSchema.pre('save', async function (next) {
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
+});
 
 export const User = model<IUserShape>('User', userSchema);

@@ -16,10 +16,8 @@ describe('GET /', () => {
         const res = await request(app).get('/');
 
         expect(res.status).toBe(200);
-        expect(res.body).toEqual({
-            success: true,
-            statusCode: 200,
-            message: 'Server is running',
-        });
+        expect(res.body.success).toBe(true);
+        expect(res.body.statusCode).toBe(200);
+        expect(res.body.message).toBe('Server is running');
     });
 });

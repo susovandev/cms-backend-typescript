@@ -1,15 +1,6 @@
 import request from 'supertest';
-import { describe, it, expect, beforeAll } from 'vitest';
-import { App } from '../src/app.js';
-import { Application } from 'express';
-
-const appInstance = new App();
-let app: Application;
-
-beforeAll(async () => {
-    await appInstance.start();
-    app = appInstance.app;
-});
+import { describe, it, expect } from 'vitest';
+import { app } from '@/app.js';
 
 describe('GET /', () => {
     it('should return 200 with a success message', async () => {

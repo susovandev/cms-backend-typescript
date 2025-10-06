@@ -1,49 +1,33 @@
 import express, { type Application, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { config } from './config/env-config.js';
-import { connectDB } from './db/db.js';
-import Logger from './lib/logger.js';
 import morganMiddleware from './middlewares/morgan-middleware.js';
 import { ApiResponse } from './utils/apiResponse.js';
 import { globalErrorHandler } from './middlewares/globalErrorHandler-middleware.js';
 import { notFoundHandler } from './middlewares/notFoundHandler-middleware.js';
-import { appRouter } from './routes/app.routes.js';
+import authRouter from './modules/auth/auth-routes.js';
 
-export class App {
-    app: Application;
-    constructor() {
-        this.app = express();
-    }
+const app: Application = express();
 
-    public async start() {
-        await connectDB();
-        this.setupMiddlewares();
-        this.setupRoutes();
-        this.setupGlobalErrors();
-        this.serverListen();
-    }
+// JSON Middleware
+app.use(express.json({ limit: '10kb', strict: true }));
+app.use(express.urlencoded({ limit: '10kb', extended: true }));
 
-    private setupMiddlewares() {
-        this.app.use(express.json({ limit: '10kb', strict: true }));
-        this.app.use(morganMiddleware);
-    }
-    private setupRoutes() {
-        this.app.get('/', (_req: Request, res: Response) => {
-            res.status(StatusCodes.OK).json(
-                new ApiResponse(StatusCodes.OK, 'Server is running'),
-            );
-        });
-        appRouter(this.app);
-    }
-    private setupGlobalErrors() {
-        this.app.use(notFoundHandler);
-        this.app.use(globalErrorHandler);
-    }
-    private serverListen() {
-        this.app.listen(config.SERVER.PORT, () => {
-            Logger.debug(
-                `Server is running on http://localhost:${config.SERVER.PORT}`,
-            );
-        });
-    }
-}
+// Morgan Middleware
+app.use(morganMiddleware);
+
+app.get('/', (_req: Request, res: Response) => {
+    res.status(StatusCodes.OK).json(
+        new ApiResponse(StatusCodes.OK, 'Server is running'),
+    );
+});
+
+// Global Router
+app.use('/api/v1/auth', authRouter);
+
+// NotFoundHandler
+app.use(notFoundHandler);
+
+// GlobalErrorHandler
+app.use(globalErrorHandler);
+
+export { app };

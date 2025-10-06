@@ -5,7 +5,7 @@
         "moduleResolution": "nodenext",
         "outDir": "./dist",
         "paths": {
-            "@/*": ["./src/*", "./__tests__/*"]
+            "@/*": ["./src/*"]
         },
         "removeComments": true,
         "esModuleInterop": true,
@@ -24,5 +24,5 @@
         "skipLibCheck": true
     },
     "exclude": ["node_modules", "dist", "**/*.config.ts"],
-    "include": ["src/**/*", "./__tests__/**/*"]
+    "include": ["src/**/*"]
 }

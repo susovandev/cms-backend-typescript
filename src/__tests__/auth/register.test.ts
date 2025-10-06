@@ -1,25 +1,20 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import request from 'supertest';
 import mongoose from 'mongoose';
-import { Application } from 'express';
+import { app } from '@/app.js';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { App } from '@/app.js';
 import { User as userModel } from '@/modules/user/user-model.js';
 
-const appInstance = new App();
-let app: Application;
 let mongoServer: MongoMemoryServer;
 
 describe('POST /api/v1/auth/register', () => {
     beforeAll(async () => {
         mongoServer = await MongoMemoryServer.create();
-        await appInstance.start();
         const uri = mongoServer.getUri();
         if (mongoose.connection.readyState !== 0) {
             await mongoose.disconnect();
         }
         await mongoose.connect(uri);
-        app = appInstance.app;
     });
 
     beforeEach(async () => {
@@ -34,8 +29,8 @@ describe('POST /api/v1/auth/register', () => {
 
     it('should register a new user successfully', async () => {
         const res = await request(app).post('/api/v1/auth/register').send({
-            username: 'john_doe',
-            email: 'john@example.com',
+            username: 'suso',
+            email: 'susovandas@gmail.com',
             password: 'Password123!',
         });
 
@@ -44,7 +39,9 @@ describe('POST /api/v1/auth/register', () => {
         expect(res.body.statusCode).toBe(201);
         expect(res.body.message).toBe('Account created successfully');
 
-        const userInDB = await userModel.findOne({ email: 'john@example.com' });
+        const userInDB = await userModel.findOne({
+            email: 'susovandas@gmail.com',
+        });
         expect(userInDB).not.toBeNull();
     });
 

@@ -104,4 +104,15 @@ describe('POST /api/v1/auth/login', () => {
         expect(res.body.statusCode).toBe(401);
         expect(res.body.message).toBe('Invalid credentials');
     });
+
+    it('should fail when password is incorrect', async () => {
+        const res = await request(app).post('/api/v1/auth/login').send({
+            email: 'test@example.com',
+            password: 'wrongpassword',
+        });
+
+        expect(res.status).toBe(401);
+        expect(res.body.success).toBe(false);
+        expect(res.body.message).toBe('Invalid credentials');
+    });
 });

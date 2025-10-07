@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-export const registerValidation = () => [
+export const registerValidationSchema = () => [
     body('username')
         .exists()
         .withMessage('Username is required')
@@ -26,7 +26,7 @@ export const registerValidation = () => [
         .escape(),
 ];
 
-export const loginValidation = () => [
+export const loginValidationSchema = () => [
     body('email')
         .exists()
         .withMessage('Email is required')

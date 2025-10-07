@@ -1,5 +1,5 @@
 import { app } from './app.js';
-import { config } from './config/env-config.js';
+import { config } from './config/env.config.js';
 import Logger from './lib/logger.js';
 import { connectDB } from './db/db.js';
 

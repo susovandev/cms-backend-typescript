@@ -2,12 +2,12 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/src/main.js",
+  "main": "dist/main.js",
   "scripts": {
     "test": "set NODE_ENV=test && vitest",
     "start:dev": "tsx watch src/main.ts",
-    "build": "npm run format && tsc && tsc-alias",
-    "start:prod": "set NODE_ENV=production && node dist/src/main.js",
+    "build": "tsc && tsc-alias",
+    "start:prod": "set NODE_ENV=production && node dist/main.js",
     "format": "prettier --write \"src/**/*.ts\" ",
     "format:check": "prettier --check \"src/**/*.ts\" "
   },
@@ -17,7 +17,9 @@
   "type": "module",
   "devDependencies": {
     "@eslint/js": "^9.37.0",
+    "@types/cookie-parser": "^1.4.9",
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.6.2",
     "@types/supertest": "^6.0.3",
     "eslint": "^9.37.0",
@@ -37,10 +39,12 @@
   "dependencies": {
     "@types/morgan": "^1.9.10",
     "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
     "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.0",
     "morgan": "^1.10.1",
     "winston": "^3.18.3"

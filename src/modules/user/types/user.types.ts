@@ -18,6 +18,8 @@ export interface IUserShape extends Document {
     isActive: boolean;
     resetPasswordToken: string;
     resetPasswordExpires: Date;
+    refreshToken: string;
     createdAt: Date;
     updatedAt: Date;
+    comparePassword(password: string): Promise<boolean>;
 }

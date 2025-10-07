@@ -3,7 +3,7 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import { app } from '@/app.js';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { User as userModel } from '@/modules/user/user-model.js';
+import { User as userModel } from '@/modules/user/user.model.js';
 
 let mongoServer: MongoMemoryServer;
 

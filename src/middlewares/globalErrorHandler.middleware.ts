@@ -2,7 +2,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { AppError } from '@/errors/index.js';
-import { config } from '@/config/env-config.js';
+import { config } from '@/config/env.config.js';
 import Logger from '@/lib/logger.js';
 
 export const globalErrorHandler = (

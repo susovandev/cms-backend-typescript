@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IUserShape, UserRole } from './types/user-types.js';
+import { IUserShape, UserRole } from './types/user.types.js';
 import bcrypt from 'bcryptjs';
 export const userSchema: Schema<IUserShape> = new Schema(
     {
@@ -64,6 +64,9 @@ export const userSchema: Schema<IUserShape> = new Schema(
             type: Date,
             default: null,
         },
+        refreshToken: {
+            type: String,
+        },
     },
     { timestamps: true },
 );
@@ -77,4 +80,9 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
+userSchema.methods.comparePassword = async function (
+    enteredPassword: string,
+): Promise<boolean> {
+    return await bcrypt.compare(enteredPassword, this.password);
+};
 export const User = model<IUserShape>('User', userSchema);

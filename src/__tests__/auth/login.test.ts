@@ -58,5 +58,16 @@ describe('POST /api/v1/auth/login', () => {
         });
         expect(userInDB).not.toBeNull();
     });
-    
+
+    it('should fail when fields are missing', async () => {
+        const res = await request(app).post('/api/v1/auth/login').send({
+            email: 'susovandas@gmail.com',
+        });
+
+        expect(res.status).toBe(400);
+        expect(res.body.success).toBe(false);
+        expect(res.body.statusCode).toBe(400);
+        expect(res.body.message).toBe('Received data is not valid');
+        expect(res.body.errors).toBeInstanceOf(Array);
+    });
 });

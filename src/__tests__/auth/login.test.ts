@@ -81,6 +81,18 @@ describe('POST /api/v1/auth/login', () => {
         expect(res.body.errors).toBeInstanceOf(Array);
     });
 
+    it('should fail for invalid email format', async () => {
+        const res = await request(app).post('/api/v1/auth/login').send({
+            email: 'invalidemail',
+            password: 'password123',
+        });
+
+        expect(res.status).toBe(400);
+        expect(res.body.success).toBe(false);
+        expect(res.body.message).toBe('Received data is not valid');
+        expect(res.body.errors).toBeInstanceOf(Array);
+    });
+
     it('should fail when user not found', async () => {
         const res = await request(app).post('/api/v1/auth/login').send({
             email: 'no_username@example.com',

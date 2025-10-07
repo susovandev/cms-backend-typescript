@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { config } from '@/config/env.config.js';
 import { UnauthorizedError } from '@/errors/unAuthorized.error.js';
 import { Request, Response, NextFunction } from 'express';
@@ -15,16 +16,28 @@ export const authMiddleware = async (
     if (!token) {
         throw new UnauthorizedError('You are not logged in!');
     }
-    const decodeToken = jwt.verify(token, config.JWT.ACCESS_SECRET as string);
-    if (!decodeToken) {
+    try {
+        const decodeToken = jwt.verify(
+            token,
+            config.JWT.ACCESS_SECRET as string,
+        );
+        if (!decodeToken) {
+            throw new UnauthorizedError('You are not verified user!');
+        }
+        const user = (await userModel
+            .findById(decodeToken?.sub)
+            .select('-password')) as IUserShape | null;
+        if (!user) {
+            throw new NotFoundError('User not found');
+        }
+        req.user = user;
+        next();
+    } catch (err: any) {
+        if (err.name === 'TokenExpiredError') {
+            throw new UnauthorizedError(
+                'Your session has expired, please log in again.',
+            );
+        }
         throw new UnauthorizedError('You are not verified user!');
     }
-    const user = (await userModel
-        .findById(decodeToken?.sub)
-        .select('-password')) as IUserShape | null;
-    if (!user) {
-        throw new NotFoundError('User not found');
-    }
-    req.user = user;
-    next();
 };

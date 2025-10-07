@@ -73,9 +73,7 @@ describe('POST /api/v1/auth/login', () => {
             .send();
 
         expect(res.status).toBe(401);
-        expect(res.body).toHaveProperty(
-            'message',
-            'You are not verified user!',
-        );
+        expect(res.body.success).toBe(false);
+        expect(res.body.message).toBe('You are not verified user!');
     });
 });

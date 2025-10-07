@@ -58,4 +58,12 @@ describe('POST /api/v1/auth/login', () => {
         expect(res.body.success).toBe(true);
         expect(res.body.message).toBe('Logout successful');
     });
+
+    it('should return 401 if token is missing', async () => {
+        const res = await request(app).post('/api/v1/auth/logout').send();
+
+        expect(res.status).toBe(401);
+        expect(res.body.success).toBe(false);
+        expect(res.body.message).toBe('You are not logged in!');
+    });
 });

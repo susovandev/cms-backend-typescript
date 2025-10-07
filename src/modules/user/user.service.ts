@@ -1,5 +1,5 @@
 import { InternalServerError } from '@/errors/internalServer.error.js';
-import { ILoginDTO, IRegisterDTO } from '../auth/dto/auth.dto.js';
+import { ILoginDTO, IRegisterDTO } from '../../types/dto/auth.dto.js';
 import { UserRepository } from './user.repository.js';
 import { ConflictError } from '@/errors/conflict.error.js';
 import { UnauthorizedError } from '@/errors/unAuthorized.error.js';
@@ -29,6 +29,14 @@ export class UserService {
         const user = await this.userRepo.getByEmail(loginDTO.email);
         if (!user || !(await user.comparePassword(loginDTO.password))) {
             throw new UnauthorizedError('Invalid credentials');
+        }
+        return user;
+    }
+
+    async getUerById(_id: string) {
+        const user = await this.userRepo.getById(_id);
+        if (!user) {
+            throw new UnauthorizedError('User not found');
         }
         return user;
     }

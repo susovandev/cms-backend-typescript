@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IUserShape, UserRole } from './types/user.types.js';
+import { IUserShape, UserRole } from '../../types/users/user.types.js';
 import bcrypt from 'bcryptjs';
 export const userSchema: Schema<IUserShape> = new Schema(
     {

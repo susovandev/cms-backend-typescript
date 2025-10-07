@@ -1,4 +1,4 @@
-import { IUserShape } from '@/modules/user/types/user.types.js';
+import { IUserShape } from '@/types/users/user.types.js';
 
 export const sanitizeUserResponse = (user: IUserShape) => {
     if (!user) return null;

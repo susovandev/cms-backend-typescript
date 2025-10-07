@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { ApiResponse } from '@/utils/apiResponse.js';
-import { ILoginDTO, IRegisterDTO } from './dto/auth.dto.js';
+import { ILoginDTO, IRegisterDTO } from '../../types/dto/auth.dto.js';
 import { AuthService } from './auth.service.js';
 import { sanitizeUserResponse } from '@/utils/sanitizeResponses/sanitizeUserResponse.js';
 import { cookieOptionsFn } from '@/config/cookieOptions.config.js';
@@ -52,6 +52,23 @@ export class AuthController {
                 token: { accessToken, refreshToken },
                 user: sanitizeUserResponse(user),
             }),
+        );
+    }
+
+    /**
+     * Logout Controller
+     * @param Request req
+     * @param Response res
+     * @returns Promise<Response>
+     */
+    public async logout(req: Request, res: Response) {
+        await authService.logoutUserAccount(
+            req?.user?._id?.toString() as string,
+        );
+        res.clearCookie('accessToken');
+        res.clearCookie('refreshToken');
+        res.status(StatusCodes.OK).json(
+            new ApiResponse(StatusCodes.OK, 'Logout successful'),
         );
     }
 }

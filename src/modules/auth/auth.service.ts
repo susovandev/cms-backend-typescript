@@ -1,4 +1,4 @@
-import { ILoginDTO, IRegisterDTO } from './dto/auth.dto.js';
+import { ILoginDTO, IRegisterDTO } from '../../types/dto/auth.dto.js';
 import { UserService } from '../user/user.service.js';
 import { signAccessToken, signRefreshToken } from '@/utils/jwt.js';
 
@@ -27,5 +27,11 @@ export class AuthService {
         await user.save({ validateBeforeSave: false });
 
         return { accessToken, refreshToken, user };
+    }
+
+    public async logoutUserAccount(_id: string) {
+        const user = await this.userService.getUerById(_id);
+        user.refreshToken = '';
+        user.save({ validateBeforeSave: false });
     }
 }

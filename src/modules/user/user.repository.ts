@@ -1,5 +1,5 @@
-import { IRegisterDTO } from '../auth/dto/auth.dto.js';
-import { IUserShape } from './types/user.types.js';
+import { IRegisterDTO } from '../../types/dto/auth.dto.js';
+import { IUserShape } from '../../types/users/user.types.js';
 import { User as userModel } from './user.model.js';
 export class UserRepository {
     async create(createUserDTO: IRegisterDTO) {

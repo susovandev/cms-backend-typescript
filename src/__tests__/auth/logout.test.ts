@@ -66,4 +66,16 @@ describe('POST /api/v1/auth/login', () => {
         expect(res.body.success).toBe(false);
         expect(res.body.message).toBe('You are not logged in!');
     });
+    it('should return 401 if token is invalid', async () => {
+        const res = await request(app)
+            .post('/api/v1/auth/logout')
+            .set('Cookie', [`accessToken=invalidtoken123`])
+            .send();
+
+        expect(res.status).toBe(401);
+        expect(res.body).toHaveProperty(
+            'message',
+            'You are not verified user!',
+        );
+    });
 });

@@ -11,9 +11,7 @@ export const authMiddleware = async (
     _res: Response,
     next: NextFunction,
 ) => {
-    const token =
-        (req.cookies.accessToken as string) ||
-        (req.headers.authorization?.split(' ')[1] as string);
+    const token = req.cookies.accessToken as string;
     if (!token) {
         throw new UnauthorizedError('You are not logged in!');
     }
